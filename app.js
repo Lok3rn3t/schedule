@@ -5,7 +5,7 @@ const cron = require('node-cron');
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 
 // Load Discord configuration
-const { token, channelId, timeZone, PORT } = require('./config.json');
+const { token, channelId, timeZone, PORT, IP } = require('./config.json');
 
 // Initialize Discord client
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
@@ -164,6 +164,6 @@ function saveSchedule() {
 }
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, IP, () => {
+  console.log(`Server is running on http://${IP}:${PORT}`);
 });
