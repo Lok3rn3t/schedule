@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр расписания</title>
+    <link rel="stylesheet" href="static/css/index.css">
+    <script src="static/js/markdown.js"></script> 
+</head>
+<body>
+    <div class="container">
+        <h1>Расписание</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>День</th>
+                    <th>Время</th>
+                    <th>Предмет</th>
+                    <th>Конференция</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% schedule.forEach(entry => { %>
+                    <tr>
+                        <td>
+                            <% 
+                                let dayInRussian;
+                                switch (entry.day.toLowerCase()) {
+                                    case 'monday': dayInRussian = 'Понедельник'; break;
+                                    case 'tuesday': dayInRussian = 'Вторник'; break;
+                                    case 'wednesday': dayInRussian = 'Среда'; break;
+                                    case 'thursday': dayInRussian = 'Четверг'; break;
+                                    case 'friday': dayInRussian = 'Пятница'; break;
+                                    case 'saturday': dayInRussian = 'Суббота'; break;
+                                    case 'sunday': dayInRussian = 'Воскресенье'; break;
+                                    default: dayInRussian = '*'; // Резервный вариант для некорректных входных данных
+                                }
+                            %>
+                            <%= dayInRussian %>
+                        </td>                      
+                        <td><%= entry.time %></td>
+                        <td><%= entry.subject %></td>
+                        <td class="markdown-content"><%= entry.room %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <a href="/edit" class="edit-button">Редактировать расписание</a>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const markdownElements = document.querySelectorAll('.markdown-content');
+    markdownElements.forEach(el => {
+        const markdownText = el.textContent; // Получаем чистый текст
+        const htmlContent = markdown.toHTML(markdownText); // Преобразуем в HTML с помощью Markdown
+        el.innerHTML = htmlContent; // Вставляем преобразованный HTML
+    });
+});
+    </script>
+</body>
+</html>

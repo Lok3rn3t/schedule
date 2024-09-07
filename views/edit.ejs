@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать расписание</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <h1>Редактировать расписание</h1>
+    
+    <!-- Форма для добавления новой записи -->
+    <form action="/add" method="POST">
+        <h2>Добавить новую запись</h2>
+        <label>День
+            <select name="day" required>
+                <option value="monday">Понедельник</option>
+                <option value="tuesday">Вторник</option>
+                <option value="wednesday">Среда</option>
+                <option value="thursday">Четверг</option>
+                <option value="friday">Пятница</option>
+                <option value="saturday">Суббота</option>
+                <option value="sunday">Воскресенье</option>
+            </select>
+        </label>
+        <label>Время <input type="time" name="time" required></label>
+        <label>Предмет <input type="text" name="subject" required></label>
+        <label>Конференция <input type="text" name="room" required></label>
+        <button type="submit">Добавить запись</button>
+    </form>
+    
+    <hr>
+
+    <!-- Отображение текущего расписания в таблице -->
+    <table>
+        <thead>
+            <tr>
+                <th>День</th>
+                <th>Время</th>
+                <th>Предмет</th>
+                <th>Конференция</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% schedule.forEach((entry, index) => { %>
+                <tr>
+                    <td>
+                        <form action="/update/<%= index %>" method="POST" class="entry">
+                            <select name="day" required>
+                                <option value="monday" <%= entry.day === 'monday' ? 'selected' : '' %>>Понедельник</option>
+                                <option value="tuesday" <%= entry.day === 'tuesday' ? 'selected' : '' %>>Вторник</option>
+                                <option value="wednesday" <%= entry.day === 'wednesday' ? 'selected' : '' %>>Среда</option>
+                                <option value="thursday" <%= entry.day === 'thursday' ? 'selected' : '' %>>Четверг</option>
+                                <option value="friday" <%= entry.day === 'friday' ? 'selected' : '' %>>Пятница</option>
+                                <option value="saturday" <%= entry.day === 'saturday' ? 'selected' : '' %>>Суббота</option>
+                                <option value="sunday" <%= entry.day === 'sunday' ? 'selected' : '' %>>Воскресенье</option>
+                            </select>
+                    </td>
+                    <td><input type="time" name="time" value="<%= entry.time %>" required></td>
+                    <td><input type="text" name="subject" value="<%= entry.subject %>" required></td>
+                    <td><input type="text" name="room" value="<%= entry.room %>" required></td>
+                    <td>
+                        <button type="submit">Обновить</button>
+                        </form>
+                        <form action="/delete/<%= index %>" method="POST" style="display:inline; background-color: transparent; box-shadow: none">
+                            <button type="submit" class="delete-button">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <a href="/">Назад к расписанию</a>
+</body>
+</html>
